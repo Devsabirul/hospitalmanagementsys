@@ -2,30 +2,39 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Patient(models.Model):
-    name = models.CharField(max_length=100)
-    gender = models.CharField(max_length=100)
-    dob = models.DateField(auto_now=False, auto_now_add=False)
-    contact_num = models.CharField(max_length=100)
-    address = models.CharField(max_length=100)
-    email = models.EmailField( max_length=254)
-    insurance_details = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    dob = models.DateField(auto_now=False, auto_now_add=False)
+    gender = models.CharField(max_length=50)
+    address = models.CharField(max_length=250)
+    country = models.CharField(max_length=250)
+    city = models.CharField(max_length=250)
+    state = models.CharField(max_length=250)
+    postal_code = models.CharField(max_length=50)
+    phone = models.CharField(max_length=50)
+    avatar = models.ImageField(upload_to="Patient Image")
+    short_dio = models.TextField()
+    status = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return (self.user)
     
 
 class Doctor(models.Model):
-    name = models.CharField(max_length=50)
-    specialization = models.CharField(max_length=100)
-    contact_num = models.CharField(max_length=50)
-    email = models.EmailField(max_length=254)
-    departments = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    dob = models.DateField(auto_now=False, auto_now_add=False)
+    gender = models.CharField(max_length=50)
+    address = models.CharField(max_length=250)
+    country = models.CharField(max_length=250)
+    city = models.CharField(max_length=250)
+    state = models.CharField(max_length=250)
+    postal_code = models.CharField(max_length=50)
+    phone = models.CharField(max_length=50)
+    avatar = models.ImageField(upload_to="Doctor Image")
+    short_dio = models.TextField()
+    status = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return (self.user)
     
 
 class Appointment(models.Model):
