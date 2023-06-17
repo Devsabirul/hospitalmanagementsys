@@ -5,3 +5,7 @@ def home(request):
 
 def doctor(request):
     return render(request,"core/doctor.html")
+
+
+def add_doctor(request):
+    return render(request,"core/add-doctor.html")
