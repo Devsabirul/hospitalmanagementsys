@@ -16,6 +16,9 @@
 <!-- urls get  -->
 {% url 'home' as home %}
 {% url 'doctor-list' as doctor %}
+{% url 'add-doctor' as add_doctor %}
+{% url 'patient-list' as patient %}
+{% url 'add-patient' as add_patient %}
 
 <body>
     <div class="main-wrapper">
@@ -159,11 +162,11 @@
                         <li class=" mt-1 {% if request.path == home %} active {% endif %}">
                             <a href="{% url 'home' %}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
                         </li>
-                        <li class="{% if request.path == doctor %} active {% endif %}">
+                        <li class="{% if request.path == doctor or request.path == add_doctor%} active {% endif %}">
                             <a href="{% url 'doctor-list' %}"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
+                        <li class="{% if request.path == patient or request.path == add_patient%} active {% endif %}"> 
+                            <a href="{% url 'patient-list' %}"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
