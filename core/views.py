@@ -38,7 +38,7 @@ def add_doctor(request):
         status = request.POST.get("status")
         User.objects.create_user(username=username,password=password1,first_name=first_name,last_name=last_name,email=email)
         user = User.objects.order_by("-id")[:1].get()
-        if avater == None:
+        if avatar == None:
             doctor = Doctor(user=user,dob=dob,gender=gender,address=address,country=country,city=city,state=state,postal_code=postal_code,phone=phone,short_dio=sort_bio,status=status)
             doctor.save()
         else:
