@@ -33,7 +33,7 @@ def add_doctor(request):
         state = request.POST.get("state")
         postal_code = request.POST.get("postal_code")
         phone = request.POST.get("phone")
-        avater = request.FILES.get("avater")
+        avatar = request.FILES.get("avater")
         sort_bio = request.POST.get("sort_bio")
         status = request.POST.get("status")
         User.objects.create_user(username=username,password=password1,first_name=first_name,last_name=last_name,email=email)
@@ -42,7 +42,7 @@ def add_doctor(request):
             doctor = Doctor(user=user,dob=dob,gender=gender,address=address,country=country,city=city,state=state,postal_code=postal_code,phone=phone,short_dio=sort_bio,status=status)
             doctor.save()
         else:
-            doctor = Doctor(user=user,dob=dob,gender=gender,address=address,country=country,city=city,state=state,postal_code=postal_code,phone=phone,avater=avater,short_dio=sort_bio,status=status)
+            doctor = Doctor(user=user,dob=dob,gender=gender,address=address,country=country,city=city,state=state,postal_code=postal_code,phone=phone,avatar=avatar,short_dio=sort_bio,status=status)
             doctor.save()
         msg = "Doctor added successfully."
     return render(request,"core/add-doctor.html",locals())
