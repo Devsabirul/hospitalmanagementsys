@@ -11,11 +11,11 @@ class Patient(models.Model):
     state = models.CharField(max_length=250,null=True,blank=True)
     postal_code = models.CharField(max_length=50,null=True,blank=True)
     phone = models.CharField(max_length=50,null=True,blank=True)
-    avatar = models.ImageField(upload_to="Patient Image",default="static/base/assets/img/user.jpg")
+    avatar = models.ImageField(upload_to="PatientImage",default="DoctorImage/default/user_icafoe.jpg")
     status = models.CharField(max_length=50,null=True,blank=True)
 
     def __str__(self):
-        return (self.user)
+        return str(self.user)
     
 
 class Doctor(models.Model):
@@ -28,12 +28,12 @@ class Doctor(models.Model):
     state = models.CharField(max_length=250,null=True,blank=True)
     postal_code = models.CharField(max_length=50,null=True,blank=True)
     phone = models.CharField(max_length=50,null=True,blank=True)
-    avatar = models.ImageField(upload_to="Doctor Image", default="static/base/assets/img/user.jpg")
+    avatar = models.ImageField(upload_to="DoctorImage", default="DoctorImage/default/user_icafoe.jpg")
     short_dio = models.TextField(null=True,blank=True)
     status = models.CharField(max_length=50,null=True,blank=True)
 
     def __str__(self):
-        return (self.user)
+        return str(self.user.first_name)
     
 
 class Appointment(models.Model):
