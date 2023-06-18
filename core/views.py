@@ -1,5 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404, redirect
+from django.conf import settings
+import os
 from .models import *
 
 def home(request):
@@ -47,7 +50,17 @@ def add_doctor(request):
 def add_patient(request):
     return render(request,"core/add-patient.html")
 
-def delete_doctor(request,id):
-    doctor = Doctor.objects.get(id=id)
+def delete_doctor(request, id):
+    doctor = get_object_or_404(Doctor, id=id)
+
+    # Check if the avatar is the default one
+    if doctor.avatar != "DoctorImage/default/user_icafoe.jpg":
+        # Delete the avatar file from local storage
+        if settings.DEFAULT_FILE_STORAGE != 'cloudinary_storage.storage.MediaCloudinaryStorage':
+            if doctor.avatar and os.path.isfile(doctor.avatar.path):
+                os.remove(doctor.avatar.path)
+
+    # Delete the doctor from the database
     doctor.delete()
+
     return redirect("doctor-list")
