@@ -11,7 +11,7 @@ class Patient(models.Model):
     state = models.CharField(max_length=250,null=True,blank=True)
     postal_code = models.CharField(max_length=50,null=True,blank=True)
     phone = models.CharField(max_length=50,null=True,blank=True)
-    avatar = models.ImageField(upload_to="PatientImage",default="DoctorImage/default/user_icafoe.jpg")
+    avatar = models.ImageField(upload_to="PatientImage",default="default/user.jpg")
     status = models.CharField(max_length=50,null=True,blank=True)
 
     def __str__(self):
@@ -28,7 +28,7 @@ class Doctor(models.Model):
     state = models.CharField(max_length=250,null=True,blank=True)
     postal_code = models.CharField(max_length=50,null=True,blank=True)
     phone = models.CharField(max_length=50,null=True,blank=True)
-    avatar = models.ImageField(upload_to="DoctorImage", default="DoctorImage/default/user_icafoe.jpg")
+    avatar = models.ImageField(upload_to="DoctorImage", default="default/user.jpg")
     short_dio = models.TextField(null=True,blank=True)
     status = models.CharField(max_length=50,null=True,blank=True)
 
