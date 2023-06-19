@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date
 from django.contrib.auth.models import User
 
 class Patient(models.Model):
@@ -16,6 +17,13 @@ class Patient(models.Model):
 
     def __str__(self):
         return str(self.user)
+
+    def age(self):
+        today = date.today()
+        age = today.year - self.dob.year
+        if today.month < self.dob.month or (today.month == self.dob.month and today.day < self.dob.day):
+            age -= 1
+        return age
     
 
 class Doctor(models.Model):

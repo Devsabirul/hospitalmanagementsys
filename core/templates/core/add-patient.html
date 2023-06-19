@@ -6,6 +6,7 @@
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
             <h4 class="page-title">Add Patient</h4>
+            <p class="text-center text-danger font-weight-bold">{{msg}}</p>
         </div>
     </div>
     <div class="row">
@@ -52,24 +53,23 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Date of Birth</label>
-                            <div class="cal-icon">
-                                <input required type="text" name="dob" class="form-control datetimepicker">
+                            <div class="">
+                                <input required type="date" name="dob" class="form-control">
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group gender-select">
                             <label class="gen-label">Gender:</label>
-                            <div class="form-check-inline">
-                                <label class="form-check-label">
-                                    <input required type="radio" name="gender" class="form-check-input">Male
-                                </label>
-                            </div>
-                            <div class="form-check-inline">
-                                <label class="form-check-label">
-                                    <input required type="radio" name="gender" class="form-check-input">Female
-                                </label>
-                            </div>
+                            <select class="form-select" name="gender" style="
+                            width: 100%;
+                            padding: 5px;
+                            outline: none;
+                            border: 1px solid gray;
+                        ">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                              </select>
                         </div>
                     </div>
                     <div class="col-sm-12">
@@ -120,7 +120,7 @@
                                     <img alt="" src="{% static 'base/assets/img/user.jpg' %}">
                                 </div>
                                 <div class="upload-input">
-                                    <input required type="file" name="avater" class="form-control">
+                                    <input type="file" name="avater" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -128,20 +128,10 @@
                 </div>
                 <div class="form-group">
                     <label class="display-block">Status</label>
-                    <div class="form-check form-check-inline">
-                        <input required class="form-check-input" type="radio" name="status" id="doctor_active"
-                            value="option1" checked="">
-                        <label class="form-check-label" for="doctor_active">
-                            Active
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input required class="form-check-input" type="radio" name="status" id="doctor_inactive"
-                            value="option2">
-                        <label class="form-check-label" for="doctor_inactive">
-                            Inactive
-                        </label>
-                    </div>
+                    <select class="form-select" name="status" aria-label="Default select example" style="width: 25%;padding: 5px;outline: none;border: 1px solid gray;">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                      </select>
                 </div>
                 <div class="m-t-20 text-center">
                     <button class="btn btn-primary submit-btn">Create Doctor</button>

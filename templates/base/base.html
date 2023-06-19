@@ -11,6 +11,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'base/assets/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'base/assets/css/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'base/assets/css/style.css' %}">
+    <style>
+        *::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
 
 <!-- urls get  -->
@@ -165,8 +170,9 @@
                         <li class="{% if request.path == doctor or request.path == add_doctor%} active {% endif %}">
                             <a href="{% url 'doctor-list' %}"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
                         </li>
-                        <li class="{% if request.path == patient or request.path == add_patient%} active {% endif %}"> 
-                            <a href="{% url 'patient-list' %}"><i class="fa fa-wheelchair"></i> <span>Patients</span></a>
+                        <li class="{% if request.path == patient or request.path == add_patient%} active {% endif %}">
+                            <a href="{% url 'patient-list' %}"><i class="fa fa-wheelchair"></i>
+                                <span>Patients</span></a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
