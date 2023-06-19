@@ -1,18 +1,21 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 import os
 from .models import *
 
+
 def home(request):
-    return render(request,"core/index.html")
+    return render(request, "core/index.html")
+
 
 def doctor(request):
     doctors = Doctor.objects.order_by("-id")
-    return render(request,"core/doctor.html",locals())
+    return render(request, "core/doctor.html", locals())
+
 
 def patient(request):
     patients = Patient.objects.order_by("-id")
-    return render(request,"core/patient.html",locals())
+    return render(request, "core/patient.html", locals())
 
 
 def add_doctor(request):
@@ -35,16 +38,24 @@ def add_doctor(request):
         avatar = request.FILES.get("avater")
         sort_bio = request.POST.get("sort_bio")
         status = request.POST.get("status")
-        User.objects.create_user(username=username,password=password1,first_name=first_name,last_name=last_name,email=email)
-        user = User.objects.order_by("-id")[:1].get()
-        if avatar == None:
-            doctor = Doctor(user=user,dob=dob,gender=gender,address=address,country=country,city=city,state=state,postal_code=postal_code,phone=phone,short_dio=sort_bio,status=status)
-            doctor.save()
+        user_check = User.objects.filter(username=username).first()
+        if user_check:
+            msg = "Username already exists."
         else:
-            doctor = Doctor(user=user,dob=dob,gender=gender,address=address,country=country,city=city,state=state,postal_code=postal_code,phone=phone,avatar=avatar,short_dio=sort_bio,status=status)
-            doctor.save()
-        msg = "Doctor added successfully."
-    return render(request,"core/add-doctor.html",locals())
+            User.objects.create_user(username=username, password=password1,
+                                     first_name=first_name, last_name=last_name, email=email)
+            user = User.objects.order_by("-id")[:1].get()
+            if avatar == None:
+                doctor = Doctor(user=user, dob=dob, gender=gender, address=address, country=country, city=city,
+                                state=state, postal_code=postal_code, phone=phone, short_dio=sort_bio, status=status)
+                doctor.save()
+            else:
+                doctor = Doctor(user=user, dob=dob, gender=gender, address=address, country=country, city=city,
+                                state=state, postal_code=postal_code, phone=phone, avatar=avatar, short_dio=sort_bio, status=status)
+                doctor.save()
+            msg = "Doctor added successfully."
+    return render(request, "core/add-doctor.html", locals())
+
 
 def add_patient(request):
     msg = ""
@@ -65,16 +76,24 @@ def add_patient(request):
         phone = request.POST.get("phone")
         avatar = request.FILES.get("avater")
         status = request.POST.get("status")
-        User.objects.create_user(username=username,password=password1,first_name=first_name,last_name=last_name,email=email)
-        user = User.objects.order_by("-id")[:1].get()
-        if avatar == None:
-            patient = Patient(user=user,dob=dob,gender=gender,address=address,country=country,city=city,state=state,postal_code=postal_code,phone=phone,status=status)
-            patient.save()
+        user_check = User.objects.filter(username=username).first()
+        if user_check:
+            msg = "Username already exists."
         else:
-            patient = Patient(user=user,dob=dob,gender=gender,address=address,country=country,city=city,state=state,postal_code=postal_code,phone=phone,avatar=avatar,short_dio=sort_bio,status=status)
-            patient.save()
-        msg = "Patient added successfully."
-    return render(request,"core/add-patient.html")
+            User.objects.create_user(username=username, password=password1,
+                                     first_name=first_name, last_name=last_name, email=email)
+            user = User.objects.order_by("-id")[:1].get()
+            if avatar == None:
+                patient = Patient(user=user, dob=dob, gender=gender, address=address, country=country,
+                                  city=city, state=state, postal_code=postal_code, phone=phone, status=status)
+                patient.save()
+            else:
+                patient = Patient(user=user, dob=dob, gender=gender, address=address, country=country, city=city,
+                                  state=state, postal_code=postal_code, phone=phone, avatar=avatar, short_dio=sort_bio, status=status)
+                patient.save()
+            msg = "Patient added successfully."
+    return render(request, "core/add-patient.html", locals())
+
 
 def delete_doctor(request, id):
     doctor = Doctor.objects.get(id=id)
@@ -84,6 +103,7 @@ def delete_doctor(request, id):
     else:
         doctor.delete()
     return redirect("doctor-list")
+
 
 def delete_patient(request, id):
     patient = Patient.objects.get(id=id)
