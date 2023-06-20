@@ -24,6 +24,8 @@
 {% url 'add-doctor' as add_doctor %}
 {% url 'patient-list' as patient %}
 {% url 'add-patient' as add_patient %}
+{% url 'appointment' as appointment %}
+{% url 'add_appointment' as add_appointment %}
 
 <body>
     <div class="main-wrapper">
@@ -174,8 +176,9 @@
                             <a href="{% url 'patient-list' %}"><i class="fa fa-wheelchair"></i>
                                 <span>Patients</span></a>
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
+                        <li class="{% if request.path == appointment or request.path == add_appointment %}
+                        active {% endif %}">
+                            <a href="{% url 'appointment' %}"><i class="fa fa-calendar"></i> <span>Appointments</span></a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-calendar-check-o"></i> <span>Doctor

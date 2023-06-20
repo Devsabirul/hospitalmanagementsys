@@ -18,6 +18,16 @@ def patient(request):
     return render(request, "core/patient.html", locals())
 
 
+def appointment(request):
+    return render(request, "core/appointments.html", locals())
+
+
+def add_appointment(request):
+    patient = Patient.objects.all()
+    print(len(patient))
+    return render(request, "core/add-appointment.html", locals())
+
+
 def add_doctor(request):
     msg = ""
     if request.method == "POST":
