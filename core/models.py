@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
+from django.db.models import Max
 
 
 class Patient(models.Model):
@@ -29,8 +30,18 @@ class Patient(models.Model):
         return age
 
 
+class Department(models.Model):
+    department_name = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, null=True)
+
+    def __str__(self):
+        return self.department_name
+
+
 class Doctor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    department = models.ForeignKey(
+        Department, on_delete=models.CASCADE, null=True)
     dob = models.DateField(
         auto_now=False, auto_now_add=False, null=True, blank=True)
     gender = models.CharField(max_length=50, null=True, blank=True)
@@ -50,13 +61,12 @@ class Doctor(models.Model):
 
 
 class Appointment(models.Model):
+    appointment_id = models.PositiveIntegerField(null=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     appointment_date = models.DateField(auto_now=False, auto_now_add=False)
     time = models.TimeField(auto_now=False, auto_now_add=False)
-
-    def __str__(self):
-        return str(self.doctor), str(self.patient), str(self.appointment_date)
+    status = models.CharField(max_length=50, null=True)
 
 
 class MedicalRepord(models.Model):
@@ -69,11 +79,3 @@ class MedicalRepord(models.Model):
 
     def __str__(self):
         return self.treatment
-
-
-class Department(models.Model):
-    department_name = models.CharField(max_length=50)
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.department_name
