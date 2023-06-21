@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 {% block title %}add_appointment{% endblock title %}
 {% block body %}
 <div class="content">
@@ -14,16 +15,22 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Appointment ID</label>
-                            <input class="form-control" type="text" value="APT-0001" readonly="">
+                            <input class="form-control" type="text" value="{{appointment_id_}}" readonly=""
+                                name="appointment_id" id="appointment_id">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Patient Name</label><br>
-                            <select class="form-select" style="padding: 5px;outline: none;color: gray;border: 1px solid gray;border-radius: 5px;width: 100%;">
+                            <select class="form-select"
+                                style="padding: 5px;outline: none;color: gray;border: 1px solid gray;border-radius: 5px;width: 100%;"
+                                name="patient">
                                 <option selected disabled>Patient Name</option>
-                                <option value="">{{patient|length}}</option>
-                              </select>
+                                {% for patient in patients %}
+                                <option value="{{patient.id}}"> {{patient.user.first_name}}
+                                    {{patient.user.last_name}} </option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -31,26 +38,24 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Department</label>
-                            <select class="select select2-hidden-accessible" tabindex="-1" aria-hidden="true">
-                                <option>Select</option>
-                                <option>Dentists</option>
-                                <option>Neurology</option>
-                                <option>Opthalmology</option>
-                                <option>Orthopedics</option>
-                                <option>Cancer Department</option>
-                                <option>ENT Department</option>
-                            </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-ve0a-container"><span class="select2-selection__rendered" id="select2-ve0a-container" title="Select">Select</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                            <select class="form-select"
+                                style="padding: 5px;outline: none;color: gray;border: 1px solid gray;border-radius: 5px;width: 100%;"
+                                name="department" id="department-select">
+                                <option selected disabled>Department</option>
+                                {% for department in departments %}
+                                <option value="{{department.id}}"> {{department.department_name}} </option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Doctor</label>
-                            <select class="select select2-hidden-accessible" tabindex="-1" aria-hidden="true">
-                                <option>Select</option>
-                                <option>Cristina Groves</option>
-                                <option>Marie Wells</option>
-                                <option>Henry Daniels</option>
-                            </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-miih-container"><span class="select2-selection__rendered" id="select2-miih-container" title="Select">Select</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                            <select class="form-select"
+                                style="padding: 5px;outline: none;color: gray;border: 1px solid gray;border-radius: 5px;width: 100%;"
+                                name="doctor" id="doctor-select">
+                                <option selected disabled>Select Department first!</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -58,50 +63,34 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Date</label>
-                            <div class="cal-icon">
-                                <input type="text" class="form-control datetimepicker">
+                            <div class="">
+                                <input type="date" class="form-control " name="date">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Time</label>
-                            <div class="time-icon">
-                                <input type="text" class="form-control" id="datetimepicker3">
+                            <div class="">
+                                <input type="time" class="form-control" id="" name="time">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Patient Email</label>
-                            <input class="form-control" type="email">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Patient Phone Number</label>
-                            <input class="form-control" type="text">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Message</label>
-                    <textarea cols="30" rows="4" class="form-control"></textarea>
-                </div>
                 <div class="form-group">
                     <label class="display-block">Appointment Status</label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="status" id="product_active" value="option1" checked="">
+                        <input class="form-check-input" type="radio" name="status" id="product_active" value="Active"
+                            checked="">
                         <label class="form-check-label" for="product_active">
-                        Active
+                            Active
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="status" id="product_inactive" value="option2">
+                        <input class="form-check-input" type="radio" name="status" id="product_inactive"
+                            value="Inactive">
                         <label class="form-check-label" for="product_inactive">
-                        Inactive
+                            Inactive
                         </label>
                     </div>
                 </div>
@@ -112,4 +101,31 @@
         </div>
     </div>
 </div>
+<script src="{% static 'base/assets/js/cdnjs.cloudflare.com_ajax_libs_jquery_3.7.0_jquery.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('#department-select').on('change', function () {
+            var departmentId = $(this).val();
+
+            // Clear previous options
+            $('#doctor-select').html('<option value="">Select Doctor</option>');
+
+            // Fetch doctors based on the selected department
+            $.ajax({
+                url: Window.location,
+                type: 'GET',
+                data: { department_id: departmentId },
+                success: function (response) {
+                    // Add options for each doctor
+                    $.each(response.doctors, function (index, doctor) {
+                        $('#doctor-select').append('<option value="' + doctor.id + '">' + doctor.user__first_name +' '+ doctor.user__last_name +'</option>');
+                    });
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 {% endblock body %}

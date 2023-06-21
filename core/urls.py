@@ -7,7 +7,11 @@ urlpatterns = [
     path('patients', patient, name="patient-list"),
     path('appointment', appointment, name="appointment"),
     path('add-appointment', add_appointment, name="add_appointment"),
+    path('departments', departments, name="departments"),
+    path('add-department', add_department, name="add_department"),
     path('add-patient', add_patient, name="add-patient"),
     path('delete-doctor/<int:id>', delete_doctor, name="delete-doctor"),
     path('delete-patient/<int:id>', delete_patient, name="delete-patient"),
+    path('delete-department/<int:id>',
+         delete_department, name="delete-department"),
 ]
