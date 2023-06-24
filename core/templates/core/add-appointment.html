@@ -10,7 +10,8 @@
     </div>
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
-            <form>
+            <form method="post">
+                {% csrf_token %}
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -24,7 +25,7 @@
                             <label>Patient Name</label><br>
                             <select class="form-select"
                                 style="padding: 5px;outline: none;color: gray;border: 1px solid gray;border-radius: 5px;width: 100%;"
-                                name="patient">
+                                name="patient" required>
                                 <option selected disabled>Patient Name</option>
                                 {% for patient in patients %}
                                 <option value="{{patient.id}}"> {{patient.user.first_name}}
@@ -40,7 +41,7 @@
                             <label>Department</label>
                             <select class="form-select"
                                 style="padding: 5px;outline: none;color: gray;border: 1px solid gray;border-radius: 5px;width: 100%;"
-                                name="department" id="department-select">
+                                name="department" id="department-select" required>
                                 <option selected disabled>Department</option>
                                 {% for department in departments %}
                                 <option value="{{department.id}}"> {{department.department_name}} </option>
@@ -53,7 +54,7 @@
                             <label>Doctor</label>
                             <select class="form-select"
                                 style="padding: 5px;outline: none;color: gray;border: 1px solid gray;border-radius: 5px;width: 100%;"
-                                name="doctor" id="doctor-select">
+                                name="doctor" id="doctor-select" required>
                                 <option selected disabled>Select Department first!</option>
                             </select>
                         </div>
@@ -64,7 +65,7 @@
                         <div class="form-group">
                             <label>Date</label>
                             <div class="">
-                                <input type="date" class="form-control " name="date">
+                                <input required type="date" class="form-control " name="date" required>
                             </div>
                         </div>
                     </div>
@@ -72,7 +73,7 @@
                         <div class="form-group">
                             <label>Time</label>
                             <div class="">
-                                <input type="time" class="form-control" id="" name="time">
+                                <input required type="time" class="form-control" id="" name="time" required>
                             </div>
                         </div>
                     </div>
@@ -80,15 +81,15 @@
                 <div class="form-group">
                     <label class="display-block">Appointment Status</label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="status" id="product_active" value="Active"
-                            checked="">
+                        <input required class="form-check-input required" type="radio" name="status" id="product_active"
+                            value="Active" checked="" required>
                         <label class="form-check-label" for="product_active">
                             Active
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="status" id="product_inactive"
-                            value="Inactive">
+                        <input required class="form-check-input required" type="radio" name="status"
+                            id="product_inactive" value="Inactive" required>
                         <label class="form-check-label" for="product_inactive">
                             Inactive
                         </label>
@@ -102,6 +103,8 @@
     </div>
 </div>
 <script src="{% static 'base/assets/js/cdnjs.cloudflare.com_ajax_libs_jquery_3.7.0_jquery.min.js' %}"></script>
+
+<!-- Fetch doctors based on the selected department ---------- -->
 <script>
     $(document).ready(function () {
         $('#department-select').on('change', function () {
@@ -118,7 +121,7 @@
                 success: function (response) {
                     // Add options for each doctor
                     $.each(response.doctors, function (index, doctor) {
-                        $('#doctor-select').append('<option value="' + doctor.id + '">' + doctor.user__first_name +' '+ doctor.user__last_name +'</option>');
+                        $('#doctor-select').append('<option value="' + doctor.id + '">' + doctor.user__first_name + ' ' + doctor.user__last_name + '</option>');
                     });
                 },
                 error: function (xhr) {

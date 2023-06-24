@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "core",
     "cloudinary",
+    "account",
 ]
 
 MIDDLEWARE = [
@@ -61,6 +62,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "hospitalmanagementsys.wsgi.application"
+AUTH_USER_MODEL = 'account.User'
 
 
 # Database

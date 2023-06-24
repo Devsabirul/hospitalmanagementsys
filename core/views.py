@@ -1,46 +1,32 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 import os
 from .models import *
-from django.core import serializers
-import json
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
-
+@login_required(login_url='admin-signin')
 def home(request):
     return render(request, "core/index.html")
 
-
+@login_required(login_url='admin-signin')
 def doctor(request):
     doctors = Doctor.objects.order_by("-id")
     return render(request, "core/doctor.html", locals())
 
-
+@login_required(login_url='admin-signin')
 def patient(request):
     patients = Patient.objects.order_by("-id")
     return render(request, "core/patient.html", locals())
 
-
+@login_required(login_url='admin-signin')
 def appointment(request):
+    appointments = Appointment.objects.order_by("-id")
     return render(request, "core/appointments.html", locals())
 
-
-def serialize_with_related(queryset):
-    serialized_data = []
-    for obj in queryset:
-        serialized_obj = {
-            'id': obj.id,
-            'user': {
-                'id': obj.user.id,
-                'first_name': obj.user.first_name,
-                'last_name': obj.user.last_name
-            }
-        }
-        serialized_data.append(serialized_obj)
-
-    return json.dumps(serialized_data)
-
-
+@login_required(login_url='admin-signin')
 def add_appointment(request):
     patients = Patient.objects.all()
     departments = Department.objects.all()
@@ -63,6 +49,12 @@ def add_appointment(request):
         date = request.POST.get('date')
         time = request.POST.get('time')
         status = request.POST.get('status')
+        # get objects
+        patient_ = Patient.objects.get(id=patient)
+        doctor_ = Doctor.objects.get(id=doctor)
+        Appointment(appointment_id=appointment_id, patient=patient_,
+                    doctor=doctor_, status=status, appointment_date=date, time=time).save()
+        return redirect("appointment")
 
     context = {
         'patients': patients,
@@ -71,12 +63,12 @@ def add_appointment(request):
     }
     return render(request, "core/add-appointment.html", context)
 
-
+@login_required(login_url='admin-signin')
 def departments(request):
     departments = Department.objects.all()
     return render(request, "core/departments.html", locals())
 
-
+@login_required(login_url='admin-signin')
 def add_department(request):
     msg = ""
     doctors = Doctor.objects.all()
@@ -88,7 +80,7 @@ def add_department(request):
         msg = "Department Successfully Added."
     return render(request, "core/add-department.html", locals())
 
-
+@login_required(login_url='admin-signin')
 def add_doctor(request):
     msg = ""
     departments = Department.objects.filter(status="Active")
@@ -98,7 +90,6 @@ def add_doctor(request):
         username = request.POST.get("username")
         email = request.POST.get("email")
         password1 = request.POST.get("password1")
-        password2 = request.POST.get("password2")
         dob = request.POST.get("dob")
         gender = request.POST.get("gender")
         department = request.POST.get("department")
@@ -117,7 +108,7 @@ def add_doctor(request):
             msg = "Username already exists."
         else:
             User.objects.create_user(username=username, password=password1,
-                                     first_name=first_name, last_name=last_name, email=email)
+                                     first_name=first_name, last_name=last_name, email=email, is_doctor=True)
             user = User.objects.order_by("-id")[:1].get()
             if avatar == None:
                 doctor = Doctor(user=user, dob=dob, gender=gender, address=address, country=country, city=city,
@@ -130,7 +121,55 @@ def add_doctor(request):
             msg = "Doctor added successfully."
     return render(request, "core/add-doctor.html", locals())
 
+@login_required(login_url='admin-signin')
+def edit_doctor(request, id):
+    msg = ""
+    departments = Department.objects.filter(status="Active")
+    doctor_ = Doctor.objects.get(id=id)
+    if request.method == "POST":
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+        dob = request.POST.get("dob")
+        gender = request.POST.get("gender")
+        department = request.POST.get("department")
+        address = request.POST.get("address")
+        country = request.POST.get("country")
+        city = request.POST.get("city")
+        state = request.POST.get("state")
+        postal_code = request.POST.get("postal_code")
+        phone = request.POST.get("phone")
+        avatar = request.FILES.get("avater")
+        sort_bio = request.POST.get("sort_bio")
+        status = request.POST.get("status")
+        user_check = User.objects.filter(username=username).first()
+        department_ = Department.objects.get(id=department)
+        print(password1)
+        if user_check:
+            msg = "Username already exists."
+        else:
+            if password1 != "":
+                print('password1')
+            else:
+                print(password1)
+            # if password1 != "":
+            #     User.objects.create_user(username=username, password=password1,
+            #                              first_name=first_name, last_name=last_name, email=email)
+            #     user = User.objects.order_by("-id")[:1].get()
+            # if avatar == None:
+            #     doctor = Doctor(user=user, dob=dob, gender=gender, address=address, country=country, city=city,
+            #                     state=state, avatar=doctor_.avatar, postal_code=postal_code, phone=phone, short_dio=sort_bio, status=status, department=department_)
+            #     doctor.save()
+            # else:
+            #     doctor = Doctor(user=user, dob=dob, gender=gender, address=address, country=country, city=city,
+            #                     state=state, postal_code=postal_code, phone=phone, avatar=avatar, short_dio=sort_bio, status=status, department=department_)
+            #     doctor.save()
+            # msg = "Doctor added successfully."
+    return render(request, "core/edit-doctor.html", locals())
 
+@login_required(login_url='admin-signin')
 def add_patient(request):
     msg = ""
     if request.method == "POST":
@@ -193,3 +232,9 @@ def delete_department(request, id):
     departments = Department.objects.get(id=id)
     departments.delete()
     return redirect("departments")
+
+
+def delete_appointment(request, id):
+    appointments = Appointment.objects.get(id=id)
+    appointments.delete()
+    return redirect("appointment")
